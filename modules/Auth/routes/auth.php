@@ -6,7 +6,7 @@ use Modules\Auth\App\Livewire\Actions\Logout;
 use Modules\Auth\App\Livewire\ConfirmPassword;
 use Modules\Auth\App\Livewire\ForgotPassword;
 use Modules\Auth\App\Livewire\Login;
-use Modules\Auth\App\Livewire\Register;
+use Modules\Auth\app\Livewire\Register;
 use Modules\Auth\App\Livewire\ResetPassword;
 use Modules\Auth\App\Livewire\VerifyEmail;
 
