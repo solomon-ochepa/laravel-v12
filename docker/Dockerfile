@@ -1,0 +1,72 @@
+# Note: Run `docker build -t mburton3969/php-nodejs:8.3 -f docker/Dockerfile.php-nodejs .` to build the base image
+
+# -----------------------------
+# Stage 1: Node build
+# -----------------------------
+FROM mburton3969/php-nodejs:8.3 AS node-builder
+
+ARG APP_ENV="production"
+
+# Install Node dependencies (cached by package.json + lockfile)
+COPY --chown=www-data:www-data package.json pnpm-lock.yaml* ./
+RUN set -eux; \
+    if [ -f "package.json" ]; then \
+        pnpm install --frozen-lockfile; \
+    fi
+
+# Copy only necessary source files for asset build
+COPY --chown=www-data:www-data resources/ resources/
+COPY --chown=www-data:www-data vite.config.* tailwind.config.* postcss.config.* ./
+
+# Run build
+RUN set -eux; \
+    pnpm run build; \
+    if [ "$APP_ENV" = "prod" ] || [ "$APP_ENV" = "production" ]; then \
+        pnpm prune --prod; \
+    fi
+
+# -----------------------------
+# Stage 2: PHP build
+# -----------------------------
+FROM mburton3969/php-nodejs:8.3
+
+ARG APP_ENV="production"
+ARG WWWGROUP=1000
+
+ENV APP_ENV=${APP_ENV}
+
+# Ensure php.ini is copied only if it exists
+RUN [ -f "php.ini" ] && cp php.ini /usr/local/etc/php/php.ini || true
+
+# Copy configuration files
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY --chmod=755 docker/startup.sh /usr/local/bin/startup.sh
+
+# Install Composer dependencies (without running scripts, cached by composer files)
+COPY --chown=www-data:www-data composer.json composer.lock ./
+RUN set -eux; \
+    if [ "$APP_ENV" = "prod" ] || [ "$APP_ENV" = "production" ]; then \
+        composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts; \
+    else \
+        composer install --optimize-autoloader --ignore-platform-reqs --no-scripts; \
+    fi
+
+# Copy application code
+COPY --chown=www-data:www-data . .
+
+# Copy built Node assets from node-builder stage
+COPY --from=node-builder /var/www/html/public/build public/build
+
+# Run Composer scripts after full app is present
+RUN set -eux; \
+    composer install --optimize-autoloader --ignore-platform-reqs
+
+# Create user and group for development environment
+RUN if [ "$APP_ENV" = "local" ]; then \
+        groupadd --force -g ${WWWGROUP} sail && \
+        id -u sail >/dev/null 2>&1 || useradd -ms /bin/bash -u 1337 -g sail sail; \
+    fi
+
+ENTRYPOINT ["/usr/local/bin/startup.sh"]
+
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

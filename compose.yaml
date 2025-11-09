@@ -1,0 +1,83 @@
+services:
+  laravel.test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.local
+      args:
+        WWWGROUP: '${WWWGROUP:-1000}'
+    image: laravel-v12
+    container_name: laravel-v12-laravel.test
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+      - 'localhost.test:host-gateway'
+    ports:
+      - '${APP_PORT:-80}:80'
+    environment:
+      WWWUSER: '${WWWUSER}'
+      IGNITION_LOCAL_SITES_PATH: '${PWD}'
+    volumes:
+      - '.:/var/www/html'
+    depends_on:
+      - mysql
+      - redis
+    restart: always
+    networks:
+      - shared
+
+  mysql:
+    image: mysql:8.0
+    command: --skip-log-bin
+    container_name: laravel-v12-mysql
+    ports:
+      - '${FORWARD_DB_PORT:-3306}:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      # MYSQL_USER: '${DB_USERNAME}'
+      # MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - 'mysql:/var/lib/mysql'
+      # - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+    healthcheck:
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - '-p${DB_PASSWORD}'
+      retries: 3
+      timeout: 5s
+    restart: always
+    networks:
+      - shared
+
+  redis:
+    image: 'redis:7-alpine'
+    container_name: laravel-v12-redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '${FORWARD_REDIS_PORT:-6379}:6379'
+    volumes:
+      - 'redis:/data'
+      - './docker/${APP_ENV:-local}/redis.conf:/usr/local/etc/redis/redis.conf:ro'
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      retries: 3
+      timeout: 5s
+      interval: 30s
+      start_period: 10s
+    restart: always
+    networks:
+      - shared
+
+volumes:
+  mysql:
+  redis:
+
+networks:
+  shared:
+    external: true
