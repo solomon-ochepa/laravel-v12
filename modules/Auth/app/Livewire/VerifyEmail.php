@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Auth;
+namespace Modules\Auth\App\Livewire;
 
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +11,11 @@ use Livewire\Component;
 #[Layout('components.layouts.auth')]
 class VerifyEmail extends Component
 {
+    public function render()
+    {
+        return view('auth::livewire.verify-email');
+    }
+
     /**
      * Send an email verification notification to the user.
      */

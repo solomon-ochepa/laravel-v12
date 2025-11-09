@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Auth;
+namespace Modules\Auth\App\Livewire;
 
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +22,11 @@ class Login extends Component
     public string $password = '';
 
     public bool $remember = false;
+
+    public function render()
+    {
+        return view('auth::livewire.login');
+    }
 
     /**
      * Handle an incoming authentication request.

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Auth;
+namespace Modules\Auth\App\Livewire;
 
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -20,6 +20,11 @@ class Register extends Component
     public string $password = '';
 
     public string $password_confirmation = '';
+
+    public function render()
+    {
+        return view('auth::livewire.register');
+    }
 
     /**
      * Handle an incoming registration request.

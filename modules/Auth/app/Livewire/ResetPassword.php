@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Auth;
+namespace Modules\Auth\App\Livewire;
 
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
@@ -32,6 +32,11 @@ class ResetPassword extends Component
         $this->token = $token;
 
         $this->email = request()->string('email');
+    }
+
+    public function render()
+    {
+        return view('auth::livewire.reset-password');
     }
 
     /**
