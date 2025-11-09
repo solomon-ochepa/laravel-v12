@@ -1,49 +1,52 @@
 <?php
 
-use App\Livewire\Auth\Login;
 use App\Models\User;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Livewire\Livewire;
+use Modules\Auth\app\Livewire\Login;
 
-test('login screen can be rendered', function () {
-    $response = $this->get('/login');
+describe('Authentication', function () {
+    test('login screen can be rendered', function () {
+        $response = $this->get('/login');
 
-    $response->assertStatus(200);
-});
+        $response->assertStatus(200);
+    });
 
-test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
+    test('users can authenticate using the login screen', function () {
+        $user = User::factory()->create();
 
-    $response = Livewire::test(Login::class)
-        ->set('email', $user->email)
-        ->set('password', 'password')
-        ->call('login');
+        $response = Livewire::test(Login::class)
+            ->set('username', $user->email)
+            ->set('password', 'password')
+            ->call('login');
 
-    $response
-        ->assertHasNoErrors()
-        ->assertRedirect(route('dashboard', absolute: false));
+        $response
+            ->assertHasNoErrors()
+            ->assertRedirect(route('dashboard', absolute: false));
 
-    $this->assertAuthenticated();
-});
+        $this->assertAuthenticated();
+    });
 
-test('users can not authenticate with invalid password', function () {
-    $user = User::factory()->create();
+    test('users can not authenticate with invalid password', function () {
+        $user = User::factory()->create();
 
-    $response = Livewire::test(Login::class)
-        ->set('email', $user->email)
-        ->set('password', 'wrong-password')
-        ->call('login');
+        $response = Livewire::test(Login::class)
+            ->set('username', $user->email)
+            ->set('password', 'wrong-password')
+            ->call('login');
 
-    $response->assertHasErrors('email');
+        $response->assertHasErrors('username');
 
-    $this->assertGuest();
-});
+        $this->assertGuest();
+    });
 
-test('users can logout', function () {
-    $user = User::factory()->create();
+    test('users can logout', function () {
+        $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->post('/logout');
+        $response = $this->actingAs($user)/* ->withoutMiddleware(ValidateCsrfToken::class) */ ->post('/logout');
 
-    $response->assertRedirect('/');
+        $response->assertRedirect('/');
 
-    $this->assertGuest();
+        $this->assertGuest();
+    });
 });

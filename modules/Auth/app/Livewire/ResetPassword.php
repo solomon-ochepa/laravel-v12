@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Auth\App\Livewire;
+namespace Modules\Auth\app\Livewire;
 
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -34,9 +35,12 @@ class ResetPassword extends Component
         $this->email = request()->string('email');
     }
 
-    public function render()
+    public function render(): View
     {
-        return view('auth::livewire.reset-password');
+        return view('auth::livewire.reset-password')->layout('components.layouts.auth', [
+            'title' => __('Reset Password'),
+            'description' => __('Please enter your new password below to reset your password.'),
+        ]);
     }
 
     /**

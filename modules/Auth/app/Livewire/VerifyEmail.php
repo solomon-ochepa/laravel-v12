@@ -1,19 +1,22 @@
 <?php
 
-namespace Modules\Auth\App\Livewire;
+namespace Modules\Auth\app\Livewire;
 
-use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Modules\Auth\app\Livewire\Actions\Logout;
 
 #[Layout('components.layouts.auth')]
 class VerifyEmail extends Component
 {
     public function render()
     {
-        return view('auth::livewire.verify-email');
+        return view('auth::livewire.verify-email')->layout('components.layouts.auth', [
+            'title' => __('Verify Email'),
+            'description' => __('Please verify your email address by clicking on the link we just emailed to you. If you did not receive the email, we will gladly send you another.'),
+        ]);
     }
 
     /**

@@ -1,9 +1,10 @@
 <?php
 
-namespace Modules\Auth\App\Livewire;
+namespace Modules\Auth\app\Livewire;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -12,9 +13,12 @@ class ConfirmPassword extends Component
 {
     public string $password = '';
 
-    public function render()
+    public function render(): View
     {
-        return view('auth::livewire.confirm-password');
+        return view('auth::livewire.confirm-password')->layout('components.layouts.auth', [
+            'title' => 'Confirm Password',
+            'description' => '',
+        ]);
     }
 
     /**

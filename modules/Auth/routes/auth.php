@@ -2,13 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Auth\App\Http\Controllers\VerifyEmailController;
-use Modules\Auth\App\Livewire\Actions\Logout;
-use Modules\Auth\App\Livewire\ConfirmPassword;
-use Modules\Auth\App\Livewire\ForgotPassword;
-use Modules\Auth\App\Livewire\Login;
+use Modules\Auth\app\Livewire\Actions\Logout;
+use Modules\Auth\app\Livewire\ConfirmPassword;
+use Modules\Auth\app\Livewire\ForgotPassword;
+use Modules\Auth\app\Livewire\Login;
 use Modules\Auth\app\Livewire\Register;
-use Modules\Auth\App\Livewire\ResetPassword;
-use Modules\Auth\App\Livewire\VerifyEmail;
+use Modules\Auth\app\Livewire\ResetPassword;
+use Modules\Auth\app\Livewire\VerifyEmail;
 
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)->name('login');
