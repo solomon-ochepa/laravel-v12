@@ -1,0 +1,33 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use  Modules\Feature\App\Features\Feature;
+
+class $CLASS$ extends Feature
+{
+    /**
+     * A unique identifier for the feature, often used in URLs or configuration files.
+     */
+    public string $name = '$CLASS$';
+
+    /**
+     * The human-readable title of the feature, used for display purposes in the user interface.
+     */
+    public string $title = '';
+
+    /**
+     * A brief description of the feature, providing an overview of its functionality and purpose.
+     */
+    public string $description = '';
+
+    /**
+     * Specifies the user roles that are granted access to this feature by default.
+     */
+    public array $roles = [];
+
+    /**
+     * Indicates whether the feature has been fully released to all users.
+     */
+    public bool $released = false;
+}
