@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Livewire\Livewire;
 use Modules\Auth\app\Livewire\Login;
+use Modules\User\App\Models\User;
 
 describe('Authentication', function () {
     test('login screen can be rendered', function () {

@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
+use Modules\User\App\Models\User;
 
 describe('Email Verification', function () {
     test('email verification screen can be rendered', function () {

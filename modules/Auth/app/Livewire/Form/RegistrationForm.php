@@ -2,13 +2,13 @@
 
 namespace Modules\Auth\app\Livewire\Form;
 
-use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Form;
 use Modules\Auth\App\Http\Requests\CreateUserRequest;
+use Modules\User\App\Models\User;
 
 class RegistrationForm extends Form
 {

@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use Modules\Auth\app\Livewire\ForgotPassword;
 use Modules\Auth\app\Livewire\ResetPassword;
+use Modules\User\App\Models\User;
 
 describe('Password Reset', function () {
     test('reset password link screen can be rendered', function () {

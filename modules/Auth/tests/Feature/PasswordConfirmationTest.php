@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\User;
 use Livewire\Livewire;
 use Modules\Auth\app\Livewire\ConfirmPassword;
+use Modules\User\App\Models\User;
 
 describe('Password Confirmation', function () {
     test('confirm password screen can be rendered', function () {

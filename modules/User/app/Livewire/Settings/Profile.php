@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire\Settings;
+namespace Modules\User\app\Livewire\Settings;
 
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Modules\User\App\Models\User;
 
 class Profile extends Component
 {
