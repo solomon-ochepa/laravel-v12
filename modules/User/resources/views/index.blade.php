@@ -1,5 +1,5 @@
-<x-user::layouts.master>
+<x-user::layouts.app>
     <h1>Hello World</h1>
 
     <p>Module: {!! config('user.name') !!}</p>
-</x-user::layouts.master>
+</x-user::layouts.app>
