@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
+use Modules\User\App\Models\User;
 
 test('reset password link screen can be rendered', function () {
     $response = $this->get('/forgot-password');
