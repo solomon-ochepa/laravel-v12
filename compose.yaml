@@ -17,8 +17,6 @@ services:
       IGNITION_LOCAL_SITES_PATH: '${PWD}'
     volumes:
       - '.:/var/www/html'
-    networks:
-      - shared
     depends_on:
       mysql:
         condition: service_healthy
@@ -29,23 +27,23 @@ services:
       # rabbitmq:
       #   condition: service_healthy
     restart: always
+    networks:
+      - shared
 
   mysql:
-    container_name: laravel-mysql
     image: 'mysql:8.4'
+    container_name: laravel-mysql
     ports:
       - '${FORWARD_DB_PORT:-3306}:3306'
     environment:
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: '${DB_DATABASE}'
-      MYSQL_USER: '${DB_USERNAME}'
-      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      # MYSQL_USER: '${DB_USERNAME}'
+      # MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - 'mysql:/var/lib/mysql'
-    networks:
-      - shared
     healthcheck:
       test:
         - CMD
@@ -55,16 +53,16 @@ services:
       retries: 3
       timeout: 5s
     restart: always
+    networks:
+      - shared
 
   # redis:
-  #   container_name: laravel-redis
   #   image: 'redis:alpine'
+  #   container_name: laravel-redis
   #   ports:
   #     - '${FORWARD_REDIS_PORT:-6379}:6379'
   #   volumes:
   #     - 'redis:/data'
-  #   networks:
-  #     - shared
   #   healthcheck:
   #     test:
   #       - CMD
@@ -73,10 +71,12 @@ services:
   #     retries: 3
   #     timeout: 5s
   #   restart: always
+  #   networks:
+  #     - shared
 
   # typesense:
-  #   container_name: laravel-typesense
   #   image: 'typesense/typesense:27.1'
+  #   container_name: laravel-typesense
   #   ports:
   #     - '${FORWARD_TYPESENSE_PORT:-8108}:8108'
   #   environment:
@@ -85,8 +85,6 @@ services:
   #     TYPESENSE_ENABLE_CORS: '${TYPESENSE_ENABLE_CORS:-true}'
   #   volumes:
   #     - 'typesense:/typesense-data'
-  #   networks:
-  #     - shared
   #   healthcheck:
   #     test:
   #       - CMD
@@ -96,10 +94,12 @@ services:
   #     retries: 5
   #     timeout: 7s
   #   restart: always
+  #   networks:
+  #     - shared
 
   # rabbitmq:
-  #   container_name: laravel-rabbitmq
   #   image: 'rabbitmq:4-management-alpine'
+  #   container_name: laravel-rabbitmq
   #   hostname: rabbitmq
   #   ports:
   #     - '${FORWARD_RABBITMQ_PORT:-5672}:5672'
@@ -112,8 +112,6 @@ services:
   #     RABBITMQ_QUEUE: '${RABBITMQ_QUEUE}'
   #   volumes:
   #     - 'rabbitmq:/var/lib/rabbitmq'
-  #   networks:
-  #     - shared
   #   healthcheck:
   #     test:
   #       - CMD
@@ -123,6 +121,8 @@ services:
   #     retries: 3
   #     timeout: 5s
   #   restart: always
+  #   networks:
+  #     - shared
 
 networks:
   shared:
