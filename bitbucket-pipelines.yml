@@ -1,0 +1,28 @@
+image: mburton3969/pipeline-doppler:latest
+
+options:
+  docker: true
+
+pipelines:
+  pull-requests:
+    '**':
+      - parallel:
+          - step:
+              name: Code Tests
+              caches:
+                - docker
+              script:
+                # ENV
+                - echo "$ENCRYPTED_DEV_ENV_FILE" | base64 -d > .env
+                - source .env # Ensure the updated .env file is sourced
+                # Debugging
+                - echo "DOCKER_APP_NAME = ${DOCKER_APP_NAME}"
+                # Build image
+                - docker build -f deploy/Dockerfile -t ${DOCKER_APP_NAME}:test --build-arg APP_ENV=testing .
+                # Command(s)
+                - |
+                  # Lint
+                  docker run --rm ${DOCKER_APP_NAME}:test pint --test --parallel
+
+                  # Unit Tests (options: "--profanity --shard=4/4 --no-coverage")
+                  # docker run --rm ${DOCKER_APP_NAME}:test pest --parallel --processes=8
