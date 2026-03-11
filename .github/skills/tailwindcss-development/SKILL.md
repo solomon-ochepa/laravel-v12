@@ -34,11 +34,46 @@ Use `search-docs` for detailed Tailwind CSS v3 patterns and documentation.
 - Configuration is done in the `tailwind.config.js` file.
 - Import using `@tailwind` directives:
 
-<code-snippet name="v3 Import Syntax" lang="css">
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-</code-snippet>
+### CSS-First Configuration
+
+In Tailwind v4, configuration is CSS-first using the `@theme` directive — no separate `tailwind.config.js` file is needed:
+
+<!-- CSS-First Config -->
+```css
+@theme {
+  --color-brand: oklch(0.72 0.11 178);
+}
+```
+
+### Import Syntax
+
+In Tailwind v4, import Tailwind with a regular CSS `@import` statement instead of the `@tailwind` directives used in v3:
+
+<!-- v4 Import Syntax -->
+```diff
+- @tailwind base;
+- @tailwind components;
+- @tailwind utilities;
++ @import "tailwindcss";
+```
+
+### Replaced Utilities
+
+Tailwind v4 removed deprecated utilities. Use the replacements shown below. Opacity values remain numeric.
+
+| Deprecated | Replacement |
+|------------|-------------|
+| bg-opacity-* | bg-black/* |
+| text-opacity-* | text-black/* |
+| border-opacity-* | border-black/* |
+| divide-opacity-* | divide-black/* |
+| ring-opacity-* | ring-black/* |
+| placeholder-opacity-* | placeholder-black/* |
+| flex-shrink-* | shrink-* |
+| flex-grow-* | grow-* |
+| text-ellipsis | text-ellipsis |
+| box-decoration-slice | box-decoration-slice |
+| box-decoration-clone | box-decoration-clone |
 
 ## Spacing
 
