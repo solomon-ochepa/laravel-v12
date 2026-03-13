@@ -1,4 +1,4 @@
-<x-layouts.guest>
+<x-layouts.auth>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -44,4 +44,4 @@
             </x-primary-button>
         </div>
     </form>
-</x-layouts.guest>
+</x-layouts.auth>
